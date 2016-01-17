@@ -5,14 +5,28 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy.item import Item, Field
 
 
-class PlayStoreItem(scrapy.Item):
-    title = scrapy.Field()
-    genre = scrapy.Field()
-    score = scrapy.Field()
-    reviews_num = scrapy.Field()
-    downloads = scrapy.Field()
-    os = scrapy.Field()
+class PlayStoreApp(Item):
+    title = Field()
+    genre = Field()
+    score = Field()
+    reviews_num = Field()
+    downloads = Field()
+    os = Field()
     pass
+
+class PlayStoreMovie(Item):
+    title = Field()
+    genre = Field()
+    duration = Field()
+    actors = Field()
+    director = Field()
+    score = Field()
+    reviews_num = Field()
+    purchase_price = Field()
+    rent_price = Field()
+    audio = Field()
+    subtitles = ()
+    content_rating = Field()
