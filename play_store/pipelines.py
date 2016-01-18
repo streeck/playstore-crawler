@@ -16,7 +16,8 @@ class CategoryPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        return cls(spider = crawler.spider)
+        if crawler.spider is not None:
+            return cls(spider=crawler.spider)
 
     def spider_opened(self, spider):
         self.exporter = JsonItemExporter(self.file)
@@ -36,14 +37,15 @@ class AppsPipeline(object):
 
     def __init__(self, spider):
         self.file = open('{category}-{today}.json'.format(
-                today = date.today().strftime('%d-%m-%Y'),
-                category = spider.category), 'wb')
+            today=date.today().strftime('%d-%m-%Y'),
+            category=spider.category), 'wb')
         dispatcher.connect(self.spider_opened, signals.spider_opened)
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
     @classmethod
     def from_crawler(cls, crawler):
-        return cls(spider = crawler.spider)
+        if crawler.spider is not None:
+            return cls(spider=crawler.spider)
 
     def spider_opened(self, spider):
         self.exporter = JsonItemExporter(self.file)
