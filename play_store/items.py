@@ -9,13 +9,18 @@ from scrapy.item import Item, Field
 
 
 class PlayStoreApp(Item):
+    os = Field()
+    size = Field()
     rank = Field()
     title = Field()
     genre = Field()
     score = Field()
-    reviews_num = Field()
+    price = Field()
+    developer = Field()
     downloads = Field()
-    os = Field()
+    last_update = Field()
+    reviews_num = Field()
+    content_rating = Field()
 
 
 class PlayStoreMovie(Item):

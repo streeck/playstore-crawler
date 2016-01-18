@@ -8,17 +8,19 @@ from play_store.items import PlayStoreApp, PlayStoreCategory
 # The maximum number of records on the 'Top' lists.
 MAX = 540
 
+
 class AppSpider(scrapy.Spider):
     name = "apps"
-    start_urls = ['https://play.google.com/store/apps/category/ANDROID_WEAR/collection/topgrossing']
-    category = "Teste"
-
+    category = ""
     rank = 0
 
     def parse(self, response):
         if not self.rank % 60 and self.rank != MAX:
             for href in response.xpath('//a[@class="title"]/@href').extract():
                 item = PlayStoreApp()
+                item['price'] = response.xpath(
+                                '//span[@class="display-price"]/text()'
+                                ).extract()[self.rank * 2 % 60]
                 item['rank'] = self.rank + 1
                 full_url = response.urljoin(href)
                 request = scrapy.Request(full_url, callback=self.parse_app)
@@ -31,18 +33,26 @@ class AppSpider(scrapy.Spider):
     def parse_app(self, response):
         item = response.meta['item']
 
-        item['title'] = response.xpath(
-            '//div[@class="id-app-title"]/text()').extract()
-        item['genre'] = response.xpath(
-            '//span[@itemprop="genre"]/text()').extract()
-        item['score'] = response.xpath(
-            '//meta[@itemprop="ratingValue"]/@content').extract()
-        item['reviews_num'] = response.xpath(
-            '//meta[@itemprop="ratingCount"]/@content').extract()
-        item['downloads'] = response.xpath(
-            '//div[@itemprop="numDownloads"]/text()').extract()
         item['os'] = response.xpath(
-            '//div[@itemprop="operatingSystems"]/text()').extract()
+            '//div[@itemprop="operatingSystems"]/text()').extract()[0]
+        item['size'] = response.xpath(
+            '//div[@itemprop="fileSize"]/text()').extract()
+        item['title'] = response.xpath(
+            '//div[@class="id-app-title"]/text()').extract()[0]
+        item['genre'] = response.xpath(
+            '//span[@itemprop="genre"]/text()').extract()[0]
+        item['score'] = response.xpath(
+            '//meta[@itemprop="ratingValue"]/@content').extract()[0]
+        item['developer'] = response.xpath(
+            '//span[@itemprop="name"]/text()').extract()[0]
+        item['downloads'] = response.xpath(
+            '//div[@itemprop="numDownloads"]/text()').extract()[0]
+        item['last_update'] = response.xpath(
+            '//div[@itemprop="datePublished"]/text()').extract()[0]
+        item['reviews_num'] = response.xpath(
+            '//meta[@itemprop="ratingCount"]/@content').extract()[0]
+        item['content_rating'] = response.xpath(
+            '//div[@itemprop="contentRating"]/text()').extract()[0]
 
         yield item
 
