@@ -14,9 +14,12 @@ BOT_NAME = 'play_store'
 SPIDER_MODULES = ['play_store.spiders']
 NEWSPIDER_MODULE = 'play_store.spiders'
 
-
-# Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'play_store (+http://www.yourdomain.com)'
+# Configure item pipelines
+# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+   'play_store.pipelines.CategoryPipeline': 800,
+   'play_store.pipelines.AppsPipeline': 800,
+}
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -57,12 +60,6 @@ NEWSPIDER_MODULE = 'play_store.spiders'
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
 #    'scrapy.telnet.TelnetConsole': None,
-#}
-
-# Configure item pipelines
-# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'play_store.pipelines.SomePipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
