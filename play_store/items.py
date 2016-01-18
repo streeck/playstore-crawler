@@ -32,3 +32,8 @@ class PlayStoreMovie(Item):
     audio = Field()
     subtitles = ()
     content_rating = Field()
+
+
+class PlayStoreCategory(Item):
+    title = Field()
+    url = Field()

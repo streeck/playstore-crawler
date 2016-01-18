@@ -1,18 +1,17 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import scrapy
-import re
 
-from play_store.items import PlayStoreApp
+from play_store.items import PlayStoreApp, PlayStoreCategory
 
 # The maximum number of records on the 'Top' lists.
 MAX = 540
 
-
 class AppSpider(scrapy.Spider):
     name = "apps"
-    start_urls = [
-        'https://play.google.com/store/apps/category/GAME/collection/topselling_free']
+    start_urls = ['https://play.google.com/store/apps/category/ANDROID_WEAR/collection/topgrossing']
+    category = "Teste"
 
     rank = 0
 
@@ -22,7 +21,7 @@ class AppSpider(scrapy.Spider):
                 item = PlayStoreApp()
                 item['rank'] = self.rank + 1
                 full_url = response.urljoin(href)
-                request =  scrapy.Request(full_url, callback=self.parse_app)
+                request = scrapy.Request(full_url, callback=self.parse_app)
                 request.meta['item'] = item
                 self.rank += 1
                 yield request
@@ -46,3 +45,23 @@ class AppSpider(scrapy.Spider):
             '//div[@itemprop="operatingSystems"]/text()').extract()
 
         yield item
+
+
+class CategorySpider(scrapy.Spider):
+    name = "categories"
+    start_urls = ['https://play.google.com/store/apps/']
+    category = ""
+
+    def parse(self, response):
+        # The way top lists work with age ranges are a bit different on the
+        # link construction, I'll leave them out for now with not(contains).
+        categories = response.xpath("//a[contains(@href, 'category') and \
+                            not(contains(@href, '?')) and \
+                            @class='child-submenu-link']")
+
+        for category in categories:
+            item = PlayStoreCategory()
+            item['title'] = category.xpath("text()").extract()[0]
+            item['url'] = category.xpath("@href").extract()[0]
+
+            yield item
