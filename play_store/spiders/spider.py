@@ -40,7 +40,7 @@ class AppSpider(scrapy.Spider):
         item['title'] = response.xpath(
             '//div[@class="id-app-title"]/text()').extract()[0]
         item['genre'] = response.xpath(
-            '//span[@itemprop="genre"]/text()').extract()[0]
+            '//span[@itemprop="genre"]/text()').extract()
         item['score'] = response.xpath(
             '//meta[@itemprop="ratingValue"]/@content').extract()[0]
         item['developer'] = response.xpath(
