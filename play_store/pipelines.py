@@ -36,7 +36,7 @@ class CategoryPipeline(object):
 class AppsPipeline(object):
 
     def __init__(self, spider):
-        self.file = open('{category}-{today}.json'.format(
+        self.file = open('data/{category}-{today}.json'.format(
             today=date.today().strftime('%d-%m-%Y'),
             category=spider.category), 'wb')
         dispatcher.connect(self.spider_opened, signals.spider_opened)

@@ -17,8 +17,8 @@ NEWSPIDER_MODULE = 'play_store.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'play_store.pipelines.CategoryPipeline': 800,
-   'play_store.pipelines.AppsPipeline': 800,
+    'play_store.pipelines.AppsPipeline': 100,
+    'play_store.pipelines.CategoryPipeline': 200,
 }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
